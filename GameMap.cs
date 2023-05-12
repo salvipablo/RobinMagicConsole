@@ -4,7 +4,7 @@ namespace RobinMagicConsole
 {
   public static class GameMap
   {
-    public static string[,] GameMapSectors = new string[60, 30];
+    public static string[,] GameMapSectors = new string[200, 80];
     public static bool ShowKey = false;
     public static Point KeyLocation = new Point(19, 9);
 
@@ -14,7 +14,8 @@ namespace RobinMagicConsole
       {
         for (int y = 0; y < GameMapSectors.GetLongLength(1); y++)
         {
-          GameMapSectors[x, y] = "-";
+          if (x > 98) GameMapSectors[x, y] = "H";
+          else GameMapSectors[x, y] = "-";
         }
       }
       buildGrass(new Point(19, 10), new Point(35, 18));

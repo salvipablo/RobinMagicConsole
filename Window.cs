@@ -28,44 +28,48 @@ namespace RobinMagicConsole
       Console.Clear();
     }
 
-    public void DrawInterface()
+    public void DrawInterface(Point playerPositionMap)
     {
-      for (int x = UpperLimitOfScreen.X; x <= LowerLimitOfScreen.X; x++)
+      int posXMapShow = 0;
+
+      if (playerPositionMap.X < 25) posXMapShow = (playerPositionMap.X - playerPositionMap.X) - 1;
+      else posXMapShow = (playerPositionMap.X - 25) - 1;
+      int posYMapShow = (playerPositionMap.Y - playerPositionMap.Y) - 1;
+
+      for (int x = 1; x <= 50; x++)
       {
-        for (int y = UpperLimitOfScreen.Y; y <= LowerLimitOfScreen.Y; y++)
+        posXMapShow++;
+
+        for (int y = 1; y <= 30; y++)
         {
+          posYMapShow++;
           Console.SetCursorPosition(x, y);
-          if (GameMap.KeyLocation.X + 1 == x && GameMap.KeyLocation.Y + 1 == y && GameMap.ShowKey)
-          {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("L");
-            Console.ForegroundColor = ConsoleColor.White;
-          }
-          else
-          {
-            if (GameMap.GameMapSectors[x - 1, y - 1] == "H") Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(GameMap.GameMapSectors[x - 1, y - 1]);
-            Console.ForegroundColor = ConsoleColor.White;
-          }
-          
+          if (GameMap.GameMapSectors[posXMapShow, posYMapShow] == "H") Console.ForegroundColor = ConsoleColor.Green;
+          Console.Write(GameMap.GameMapSectors[posXMapShow, posYMapShow]);
+          Console.ForegroundColor = ConsoleColor.White;
         }
+
+        posYMapShow = (playerPositionMap.Y - playerPositionMap.Y) - 1;
       }
     }
 
-    public void showPlayer(Point prevPosition, Point position)
+    public void showPlayer(Point playerPrevPositionMap)
     {
+      if (Player.PlayerCurrentPositionMap.X > 25) playerPrevPositionMap = Player.PlayerCurrentPositionMap;
 
-      if (prevPosition != position)
+      if ( playerPrevPositionMap != Player.PlayerCurrentPositionMap )
       {
-        Console.SetCursorPosition(prevPosition.X, prevPosition.Y);
-        if (GameMap.GameMapSectors[prevPosition.X - 1, prevPosition.Y - 1] == "H")
+        if (GameMap.GameMapSectors[playerPrevPositionMap.X, playerPrevPositionMap.Y] == "H")
                                                                           Console.ForegroundColor = ConsoleColor.Green;
-        Console.Write(GameMap.GameMapSectors[prevPosition.X - 1, prevPosition.Y - 1]);
+        Console.SetCursorPosition(playerPrevPositionMap.X + 1, playerPrevPositionMap.Y + 1);
+        Console.Write(GameMap.GameMapSectors[playerPrevPositionMap.X, playerPrevPositionMap.Y]);
         Console.ForegroundColor = ConsoleColor.White;
       }
 
-      Console.SetCursorPosition(position.X, position.Y);
-      Console.Write(Player.PlayerSymbol);
+      if (Player.PlayerCurrentPositionMap.X < 25)
+              Console.SetCursorPosition(Player.PlayerCurrentPositionMap.X + 1, Player.PlayerCurrentPositionMap.Y + 1);
+      else Console.SetCursorPosition(25, Player.PlayerCurrentPositionMap.Y + 1);
+        Console.Write(Player.PlayerSymbol);
     }
   }
 }
